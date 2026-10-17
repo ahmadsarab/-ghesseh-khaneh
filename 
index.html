@@ -1,0 +1,235 @@
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="قصه‌خانه هوشمند؛ دنیایی از قصه‌های کودکانه فارسی و انگلیسی">
+  <title>قصه‌خانه هوشمند</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Tahoma, Arial, sans-serif;
+      background: #fff8eb;
+      color: #423454;
+      line-height: 1.9;
+    }
+    header {
+      background: #7154a5;
+      color: white;
+      padding: 18px;
+      text-align: center;
+    }
+    header h1 { margin: 4px 0; font-size: 27px; }
+    header p { margin: 4px 0; }
+    .lang {
+      background: white;
+      color: #7154a5;
+      border: 0;
+      border-radius: 20px;
+      padding: 9px 18px;
+      font-size: 15px;
+      cursor: pointer;
+    }
+    main {
+      max-width: 650px;
+      margin: 24px auto;
+      padding: 0 15px;
+    }
+    .card {
+      background: white;
+      border-radius: 20px;
+      padding: 22px;
+      margin-bottom: 18px;
+      box-shadow: 0 4px 18px #49336b12;
+    }
+    .hero { text-align: center; }
+    .hero .emoji { font-size: 60px; }
+    h2 { color: #7154a5; }
+    label { display: block; margin-top: 12px; }
+    input, select, textarea {
+      width: 100%;
+      padding: 12px;
+      margin-top: 5px;
+      border: 1px solid #ddd1ef;
+      border-radius: 10px;
+      font: inherit;
+      background: white;
+    }
+    button.primary {
+      width: 100%;
+      margin-top: 18px;
+      padding: 13px;
+      background: #7154a5;
+      color: white;
+      border: 0;
+      border-radius: 12px;
+      font: inherit;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    #story {
+      white-space: pre-wrap;
+      line-height: 2.1;
+    }
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #756987;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1 id="siteTitle">🏡 قصه‌خانه هوشمند</h1>
+    <p id="tagline">هر شب، یک ماجرای شیرین!</p>
+    <button class="lang" id="langBtn" onclick="toggleLang()">
+      English
+    </button>
+  </header>
+
+  <main>
+    <section class="card hero">
+      <div class="emoji">📚🧸🌳</div>
+      <h2 id="welcome">به دنیای قصه‌ها خوش آمدی!</h2>
+      <p id="intro">
+        شخصیت‌های دوست‌داشتنی و ماجراهای خیال‌انگیز
+        منتظر تو هستند.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2 id="formTitle">✨ قصه دلخواهت را بساز</h2>
+
+      <label id="nameLabel" for="heroName">نام شخصیت اصلی</label>
+      <input id="heroName" placeholder="مثلاً نیما">
+
+      <label id="animalLabel" for="animal">شخصیت همراه</label>
+      <select id="animal">
+        <option value="خرگوش">خرگوش 🐰</option>
+        <option value="روباه">روباه 🦊</option>
+        <option value="پرنده">پرنده 🐦</option>
+        <option value="خرس">خرس 🐻</option>
+      </select>
+
+      <label id="themeLabel" for="theme">موضوع قصه</label>
+      <select id="theme">
+        <option value="دوستی">دوستی و مهربانی</option>
+        <option value="جنگل">راز جنگل</option>
+        <option value="شجاعت">شجاعت و امید</option>
+        <option value="طبیعت">حفاظت از طبیعت</option>
+      </select>
+
+      <button class="primary" id="makeBtn" onclick="makeStory()">
+        🌟 قصه‌ام را بساز
+      </button>
+    </section>
+
+    <section class="card" id="result" hidden>
+      <h2 id="storyTitle">قصه تو</h2>
+      <p id="story"></p>
+      <p id="demoNote"></p>
+    </section>
+  </main>
+
+  <footer id="footerText">
+    قصه‌خانه هوشمند؛ جایی برای خیال‌های قشنگ کودکان 💜
+  </footer>
+
+  <script>
+    let english = false;
+
+    function toggleLang() {
+      english = !english;
+      document.documentElement.lang = english ? "en" : "fa";
+      document.documentElement.dir = english ? "ltr" : "rtl";
+
+      const words = english ? {
+        title: "🏡 Smart Story House",
+        tagline: "A sweet adventure every night!",
+        welcome: "Welcome to the world of stories!",
+        intro: "Lovely characters and magical adventures await.",
+        form: "✨ Create your own story",
+        name: "Main character's name",
+        animal: "Story companion",
+        theme: "Story theme",
+        button: "🌟 Create my story",
+        footer: "A home for children's imagination 💜",
+        note: "This is a sample story. AI will be connected in a later step.",
+        placeholder: "For example, Nima",
+        animals: ["Rabbit", "Fox", "Bird", "Bear"],
+        themes: ["Friendship and kindness", "Forest mystery",
+                 "Courage and hope", "Protecting nature"]
+      } : {
+        title: "🏡 قصه‌خانه هوشمند",
+        tagline: "هر شب، یک ماجرای شیرین!",
+        welcome: "به دنیای قصه‌ها خوش آمدی!",
+        intro: "شخصیت‌های دوست‌داشتنی و ماجراهای خیال‌انگیز منتظر تو هستند.",
+        form: "✨ قصه دلخواهت را بساز",
+        name: "نام شخصیت اصلی",
+        animal: "شخصیت همراه",
+        theme: "موضوع قصه",
+        button: "🌟 قصه‌ام را بساز",
+        footer: "قصه‌خانه هوشمند؛ جایی برای خیال‌های قشنگ کودکان 💜",
+        note: "این یک قصه نمونه است. در مرحله بعد هوش مصنوعی را متصل می‌کنیم.",
+        placeholder: "مثلاً نیما",
+        animals: ["خرگوش", "روباه", "پرنده", "خرس"],
+        themes: ["دوستی و مهربانی", "راز جنگل",
+                 "شجاعت و امید", "حفاظت از طبیعت"]
+      };
+
+      document.getElementById("siteTitle").textContent = words.title;
+      document.getElementById("tagline").textContent = words.tagline;
+      document.getElementById("welcome").textContent = words.welcome;
+      document.getElementById("intro").textContent = words.intro;
+      document.getElementById("formTitle").textContent = words.form;
+      document.getElementById("nameLabel").textContent = words.name;
+      document.getElementById("animalLabel").textContent = words.animal;
+      document.getElementById("themeLabel").textContent = words.theme;
+      document.getElementById("makeBtn").textContent = words.button;
+      document.getElementById("footerText").textContent = words.footer;
+      document.getElementById("langBtn").textContent =
+        english ? "فارسی" : "English";
+      document.getElementById("heroName").placeholder = words.placeholder;
+      document.getElementById("demoNote").textContent = words.note;
+
+      const animals = document.getElementById("animal");
+      const themes = document.getElementById("theme");
+      [...animals.options].forEach((o, i) => o.textContent = words.animals[i]);
+      [...themes.options].forEach((o, i) => o.textContent = words.themes[i]);
+    }
+
+    function makeStory() {
+      const name = document.getElementById("heroName").value.trim()
+        || (english ? "Nima" : "نیما");
+      const animal = document.getElementById("animal").value;
+      const theme = document.getElementById("theme").value;
+
+      let story;
+
+      if (english) {
+        const friend = document.getElementById("animal").selectedIndex;
+        const friends = ["a little rabbit", "a clever fox",
+                         "a colorful bird", "a kind bear"];
+        const topics = [
+          "friendship and kindness", "a forest mystery",
+          "courage and hope", "protecting nature"
+        ];
+        story = `${name} and ${friends[friend]} went on an adventure about ${topics[document.getElementById("theme").selectedIndex]}.\n\nOne sunny morning, they discovered a tiny path beneath an old tree. They decided to explore it together. Along the way, they helped a lost little creature and learned that kindness makes even the biggest problems easier.\n\nAt sunset, they returned home happily, promising to care for their forest and always help one another.\n\nAnd that was the beginning of a beautiful friendship!`;
+      } else {
+        story = `${name} و ${animal} و راز مهربانی\n\nیکی بود، یکی نبود. در روستایی سرسبز، ${name} زندگی می‌کرد. یک روز صبح، ${name} با دوست ${animal} خود به جنگل رفت تا درباره «${theme}» چیزهای تازه‌ای یاد بگیرد.\n\nآن‌ها در راه به جانوری کوچک برخوردند که راه خانه‌اش را گم کرده بود. ${name} و دوستش با مهربانی به او کمک کردند و با هم راه خانه را پیدا کردند.\n\nوقتی خورشید غروب کرد، همه خوشحال بودند. ${name} فهمید که دوستی و مهربانی، دنیا را زیباتر می‌کند.\n\nاز آن روز به بعد، آن‌ها هر روز به دیگران کمک می‌کردند و جنگل پر از شادی شد.\n\nقصه ما به سر رسید، شادی به خانه شما رسید!`;
+      }
+
+      document.getElementById("storyTitle").textContent =
+        english ? "📖 Your story" : "📖 قصه تو";
+      document.getElementById("story").textContent = story;
+      document.getElementById("demoNote").textContent = english
+        ? "This is a sample story. AI will be connected in a later step."
+        : "این یک قصه نمونه است. در مرحله بعد هوش مصنوعی را متصل می‌کنیم.";
+      document.getElementById("result").hidden = false;
+      document.getElementById("result").scrollIntoView({behavior: "smooth"});
+    }
+  </script>
+</body>
+</html>
